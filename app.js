@@ -26,3 +26,29 @@ const operate = (operator, num1, num2) => {
   }
   return result;
 };
+
+let displayValue = "";
+const display = document.querySelector(".display");
+display.addEventListener("change", function() {
+  console.log(this.value);
+});
+
+
+const clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click", () => {
+  display.value = "";
+})
+
+const digits = document.querySelectorAll(".digit");
+for (let digit of digits) {
+  digit.addEventListener("click", function() {
+    display.value += this.innerText;
+  })
+}
+
+const operators = document.querySelectorAll(".operator");
+for (let operator of operators) {
+  operator.addEventListener("click", function() {
+    display.value += " " + this.innerText + " ";
+  });
+}
