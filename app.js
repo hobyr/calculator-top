@@ -6,10 +6,10 @@ const divide = (num1, num2) => (num1 / num2);
 
 let operand1 = 0;
 let operand2 = 0;
-let operator = null;
+let operator = 0;
 
 const operate = (operator, num1, num2) => {
-  const result = 0;
+  let result = 0;
   switch (operator) {
     case 'subtract':
       result = subtract(num1, num2);
@@ -29,19 +29,17 @@ const operate = (operator, num1, num2) => {
 
 let displayValue = "";
 const display = document.querySelector(".display");
-display.addEventListener("change", function() {
-  console.log(this.value);
-});
-
 
 const clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click", () => {
+  displayValue = "";
   display.value = "";
 })
 
 const digits = document.querySelectorAll(".digit");
 for (let digit of digits) {
   digit.addEventListener("click", function() {
+    displayValue += this.value;
     display.value += this.innerText;
   })
 }
@@ -49,6 +47,24 @@ for (let digit of digits) {
 const operators = document.querySelectorAll(".operator");
 for (let operator of operators) {
   operator.addEventListener("click", function() {
+    displayValue += " " + this.value + " ";
     display.value += " " + this.innerText + " ";
   });
 }
+
+const equalButton = document.querySelector(".equal");
+equalButton.addEventListener("click", () => {
+  let orderOfOperations = displayValue.split(" ");
+  let tempResult = 0;
+
+  while (orderOfOperations.length != 1) {
+    let currentCalcArray = orderOfOperations.slice(0,3);
+    operand1 = parseInt(currentCalcArray[0]);
+    operand2 = parseInt(currentCalcArray[2]);
+    operator = currentCalcArray[1];
+    tempResult = operate(operator, operand1, operand2);
+    orderOfOperations.splice(0, 3, tempResult);
+    console.log(orderOfOperations);
+    display.value = tempResult;
+  }
+})
