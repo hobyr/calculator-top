@@ -47,8 +47,17 @@ for (let digit of digits) {
 const operators = document.querySelectorAll(".operator");
 for (let operator of operators) {
   operator.addEventListener("click", function() {
-    displayValue += " " + this.value + " ";
-    display.value += " " + this.innerText + " ";
+    if (displayValue.split(" ")[2] === "") {
+      // do nothing
+    } else if (displayValue.split(" ").length === 3) {
+      const tempCalc = displayValue.split(" ");
+      const tempResult = operate(tempCalc[1], parseFloat(tempCalc[0]), parseFloat(tempCalc[2]));
+      displayValue = `${tempResult} ${this.value} `;
+      display.value = `${tempResult} ${this.innerText} `;
+    } else {
+      displayValue += " " + this.value + " ";
+      display.value += " " + this.innerText + " ";
+    }
   });
 }
 
@@ -59,8 +68,8 @@ equalButton.addEventListener("click", () => {
 
   while (orderOfOperations.length != 1) {
     let currentCalcArray = orderOfOperations.slice(0,3);
-    operand1 = parseInt(currentCalcArray[0]);
-    operand2 = parseInt(currentCalcArray[2]);
+    operand1 = parseFloat(currentCalcArray[0]);
+    operand2 = parseFloat(currentCalcArray[2]);
     operator = currentCalcArray[1];
     tempResult = operate(operator, operand1, operand2);
     orderOfOperations.splice(0, 3, tempResult);
